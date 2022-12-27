@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        {% include 'forms.html' %}
+    </div>
+    <div class="row">
+        <h2>Our Happy Client: </h2>
+        <p>The .table class adds basic styling (light padding and horizontal dividers) to a table:</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Sl#</th>
+                <th>Name</th>
+                <th>Designation</th>
+                <th>Company</th>
+                <th>Action</th>
+            </tr>
+
+            </thead>
+            <tbody>
+
+            {% for f in happy_client %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ f.name }}</td>
+                    <td>{{ f.designation }}</td>
+                    <td>{{ f.company_name }}</td>
+                    <td>
+                        <a href="{% url 'client_edit' f.pk %}"> Update </a>
+                        <a href="{% url 'client_delete' f.pk %}"> Delete </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
