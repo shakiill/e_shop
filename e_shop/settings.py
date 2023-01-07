@@ -41,6 +41,8 @@ INSTALLED_APPS = [
 
     # project apps
     'apps.product',
+    'apps.user',
+    'apps.teacher',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +58,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'e_shop.urls'
+AUTH_USER_MODEL = 'user.CustomUser'
 
 TEMPLATES = [
     {

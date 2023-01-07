@@ -1,0 +1,54 @@
+{% extends 'includes/main.html' %}
+{% block content %}
+    <div class="container-fluid pt-4 px-4">
+        <div class="row g-4">
+            <div class="col">
+                <div class="table-responsive">
+                    <table class="table text-start align-middle table-bordered table-hover mb-0">
+                        <thead>
+                        <tr class="text-white">
+                            <th scope="col">Sl</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if object_list %}
+                            {% for s in object_list %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ s.name }}</td>
+                                    <td>{{ s.email }}</td>
+                                    <td>{{ s.phone_number }}</td>
+                                    <td>
+                                        {% if s.teacher_profile %}
+                                            <a class="btn btn-sm btn-primary"
+                                               href="">
+                                                Profile</a>
+                                        {% else %}
+                                            <a class="btn btn-sm btn-primary"
+                                               href="{% url 'teacher_profile_add' s.pk %}"> +
+                                                Profile</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <p>No data found!</p>
+                        {% endif %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block css %}
+
+
+{% endblock %}
+

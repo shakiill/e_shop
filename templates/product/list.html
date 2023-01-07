@@ -1,0 +1,45 @@
+{% extends 'includes/main.html' %}
+{% block content %}
+    <div class="container-fluid pt-4 px-4">
+        <div class="row g-4">
+            <div class="col-md-12">
+                <div class="bg-secondary rounded h-100 p-4">
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="mb-4">Products Table</h6>
+                        </div>
+                        <div class="col text-right">
+                            <a href="{% url 'product_add' %}" class="btn btn-success">Add product</a>
+                        </div>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Brand</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Offer</th>
+                            <th scope="col">Offer Price</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for p in object_list %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ p.title }}</td>
+                                <td>{{ p.category }}</td>
+                                <td>{{ p.brand }}</td>
+                                <td>{{ p.price }}</td>
+                                <td>{{ p.is_offer|yesno:'Yes,No' }}</td>
+                                <td>{{ p.offer_price }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
