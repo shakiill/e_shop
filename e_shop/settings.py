@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     # 3rd party apps
     'debug_toolbar',
+    'rest_framework',
+    'django_filters',
 
     # project apps
     'apps.product',
@@ -105,6 +107,14 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/

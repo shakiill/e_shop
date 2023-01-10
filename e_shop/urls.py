@@ -25,6 +25,7 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name="index.html"), name='home'),
     path('product/', include('apps.product.urls')),
     path('user/', include('apps.user.urls')),
+    path('api/', include('api.urls')),
 ]
 
 if settings.DEBUG:
