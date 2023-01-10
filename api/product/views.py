@@ -12,7 +12,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
-    http_method_names = ['get', 'post', 'put']
+    http_method_names = ['get', 'post', 'put', 'delete']
     filter_backends = (DjangoFilterBackend, SearchFilter)
     filterset_fields = ['category', 'brand']
     search_fields = ['title', ]
