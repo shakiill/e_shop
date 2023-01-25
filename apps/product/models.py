@@ -1,6 +1,10 @@
 from django.db import models
-from django.db.models import SET_NULL
+from django.db.models import SET_NULL, Sum
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.text import slugify
+
+from apps.user.models import Student
 
 
 # Create your models here.
@@ -84,3 +88,55 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return str(self.product.title)
+
+
+class Order(models.Model):
+    code = models.CharField(max_length=100, null=True, blank=True)
+    student = models.ForeignKey(Student, on_delete=SET_NULL, null=True, blank=True, related_name='student_order')
+    amount = models.FloatField(default=0, null=True, blank=True)
+    coupon = models.CharField(max_length=100, null=True, blank=True)
+    coupon_amount = models.FloatField(default=0, null=True, blank=True)
+    final_amount = models.FloatField(default=0, null=True, blank=True)
+    is_paid = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        am = self.order_item.aggregate(Sum('price')).get('price__sum', 0)
+        self.amount = am
+
+        self.final_amount = am
+        super(Order, self).save(*args, **kwargs)
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_item')
+    product = models.ForeignKey(Product, on_delete=SET_NULL, null=True, blank=True)
+    qty = models.FloatField(default=0)
+    unit = models.FloatField(default=0)
+    price = models.FloatField(default=0)
+
+    def save(self, *args, **kwargs):
+        self.price = self.qty * self.unit
+        super(OrderItem, self).save(*args, **kwargs)
+
+
+@receiver(post_save, sender=Order)
+def signal_code(sender, instance, created, **kwargs):
+    if created:
+        instance.code = 'ORD' + '-' + str(instance.id)
+        # amount = OrderItem.objects.filter(order__id=instance.id).aggregate(Sum('price')).get('price__sum', 0)
+        # instance.amount = amount
+        # # # if instance.coupon:
+        # # # c = Coupon.
+        # instance.final_amount = amount
+        post_save.disconnect(signal_code, sender=Order)
+        instance.save()
+        post_save.connect(signal_code, sender=Order)
+
+# @receiver(post_save, sender=OrderItem)
+# def signal_price(sender, instance, created, **kwargs):
+#     if created:
+#         amount = OrderItem.objects.filter(order=instance.order).aggregate(Sum('price')).get('price__sum')
+#         instance.order.amount = amount
+#         # if instance.coupon:
+#         # c = Coupon.
+#         instance.order.final_amount = amount
