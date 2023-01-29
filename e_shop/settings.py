@@ -159,3 +159,4 @@ CRISPY_CLASS_CONVERTERS = {
     'passwordinput': "form-control-lg form-control-solid",
     'select': "form-control-lg form-control-solid select",
 }
+
